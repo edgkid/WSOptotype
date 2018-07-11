@@ -333,15 +333,15 @@ class TestDB extends PgDataBase{
         //// aqui debo obtener un testCode
         $testCode = $this->getNameNewTest($objArr[0]->patientId);
         $canvas = new Canvas($xPixel, $yPixel, $avPixels, $testCode);
-        $canvas->newCanvasImage();
-        $canvas->rowsForCanvas();
+        //$canvas->newCanvasImage();
+        //$canvas->rowsForCanvas();
         
         ///Aqui debo obtener los elementos de interacción, habilito el atributo y lo paso por constructor
         $avElements = $this->getElementsInteraction($objArr[0]->patientId, $testCode);
         
         $cardConstructor = new CardConstructor($avPixels, $objArr[0]->distance, $testCode, $avElements);
-        $cardConstructor->fillCanvasRows();
-        //$cardConstructor->fillOptometricCard();
+        //$cardConstructor->fillCanvasRows();
+        $cardConstructor->fillOptometricCard();
         
         if (!$this->getSumaryCode($testCode)){
             $this->saveNewTest($testCode);
@@ -351,8 +351,8 @@ class TestDB extends PgDataBase{
         $response = $this->getSummaryTestByCode($testCode);
         // DElete elementos en la carpetas optometric y rows
      
-        $this->deleteImageElementOnServer("src/OptometricCard");
-        $this->deleteImageElementOnServer("src/rowsBase");
+        //$this->deleteImageElementOnServer("src/OptometricCard");
+        //$this->deleteImageElementOnServer("src/rowsBase");
         
         return $response;
     }

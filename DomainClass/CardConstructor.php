@@ -109,17 +109,18 @@ class CardConstructor {
        
         for ($position=0; $position < count($arrayRows); $position++){
             
-            $element = $element.$arrayRows[$position].".png";         
+            $element = $element.$arrayRows[$position].".png"; 
+
             //busco ancho y alto de cada row image creado
             $imageSize = getimagesize($element );    
             $xSize = $imageSize[0];              
             $ySize = $imageSize[1]; 
             
             $this->builOptometricCard($canvas, $element, $xSize, $ySize);
-            $this->setYPositionOnCard($ySize, $position);
-            $this->setXPosiitonOnCard($position);
+            /*$this->setYPositionOnCard($ySize, $position);
+            $this->setXPosiitonOnCard($position)*/
 
-            $element = $this->rowsPath;  
+            $element = $this->rowsPath; 
           
         }
         
@@ -172,9 +173,14 @@ class CardConstructor {
         $imageCanvas = $canvas;
         $imageElement = $element;
 
+       // echo $imageCanvas;
+        //echo $imageElement;
          /// creo un identificador en memoria para las imagnes
-        $imgCanvas = imagecreatefrompng($imageCanvas);
-        $imgElement = imagecreatefrompng($imageElement);
+        /*$imgCanvas = imagecreatefrompng($imageCanvas);
+        $imgElement = imagecreatefrompng($imageElement);*/
+        
+        $imgCanvas = imagecreatefrompng("C:/xampp/htdocs/WSOptotype/src/OptometricCard/LM1062018R2.png");
+        $imgElement = imagecreatefrompng("C:/xampp/htdocs/WSOptotype/src/rowsBase/LM1062018R2_1.png");
         imagealphablending($imgElement, false);
         imagesavealpha($imgElement, false);
          
@@ -187,8 +193,8 @@ class CardConstructor {
                  $this->yPosition, 
                  0, 
                  0, 
-                 $newXSize, /*Nuevo tamaño en x*/
-                 $newYSize, /*Nuevo tamaño en y*/
+                 $newXSize, 
+                 $newYSize, 
                  imagesx($imgElement), 
                  imagesy($imgElement)
                  );
