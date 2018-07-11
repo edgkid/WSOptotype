@@ -33,7 +33,8 @@ class CardConstructor {
        $this->testCode = $testCode;
        $this->canvasPath = "C:/xampp/htdocs/WSOptotype/src/OptotypeForCard/";
        $this->optotypesPath = "C:/xampp/htdocs/WSOptotype/src/OptotypeForCard/";
-       $this->rowsPath = "C:/xampp/htdocs/WSOptotype/src/rowsBase/";       
+       $this->rowsPath = "C:/xampp/htdocs/WSOptotype/src/rowsBase/"; 
+       
    }
    
    function setXPosition($xPosition) {
@@ -108,9 +109,8 @@ class CardConstructor {
        
         for ($position=0; $position < count($arrayRows); $position++){
             
-            $element = $element.$arrayRows[$position].".png";
-                        
-//            //busco ancho y alto de cada row image creado
+            $element = $element.$arrayRows[$position].".png";         
+            //busco ancho y alto de cada row image creado
             $imageSize = getimagesize($element );    
             $xSize = $imageSize[0];              
             $ySize = $imageSize[1]; 
@@ -119,7 +119,7 @@ class CardConstructor {
             $this->setYPositionOnCard($ySize, $position);
             $this->setXPosiitonOnCard($position);
 
-            $element = $element = $this->rowsPath;    
+            $element = $this->rowsPath;  
           
         }
         

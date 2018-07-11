@@ -339,10 +339,9 @@ class TestDB extends PgDataBase{
         ///Aqui debo obtener los elementos de interacción, habilito el atributo y lo paso por constructor
         $avElements = $this->getElementsInteraction($objArr[0]->patientId, $testCode);
         
-        //echo count ($avElements);
         $cardConstructor = new CardConstructor($avPixels, $objArr[0]->distance, $testCode, $avElements);
         $cardConstructor->fillCanvasRows();
-        $cardConstructor->fillOptometricCard();
+        //$cardConstructor->fillOptometricCard();
         
         if (!$this->getSumaryCode($testCode)){
             $this->saveNewTest($testCode);
@@ -355,7 +354,6 @@ class TestDB extends PgDataBase{
         $this->deleteImageElementOnServer("src/OptometricCard");
         $this->deleteImageElementOnServer("src/rowsBase");
         
-        //$response = "";
         return $response;
     }
     
@@ -421,14 +419,12 @@ class TestDB extends PgDataBase{
                         " AND pa.idPatient = ".$patientId.
                         " AND ma.appointmentdate = to_date(".$today.",'dd/mm/yyyy')".
                         " AND te.testCode LIKE '%".$testCode."%'"; 
-        
-        //echo $query;
+       
         $db = new PgDataBase();
         $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
         
         while ($row = pg_fetch_row($result)) {
             $elements [$position] = $row [0];
-            echo $elements [$position];
             $position ++;
          }   
         
