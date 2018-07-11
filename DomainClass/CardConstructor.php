@@ -31,7 +31,7 @@ class CardConstructor {
        $this->xPosition = 0;
        $this->yPosition = 10;
        $this->testCode = $testCode;
-       $this->canvasPath = "C:/xampp/htdocs/WSOptotype/src/OptotypeForCard/";
+       $this->canvasPath = "C:/xampp/htdocs/WSOptotype/src/OptometricCard/";
        $this->optotypesPath = "C:/xampp/htdocs/WSOptotype/src/OptotypeForCard/";
        $this->rowsPath = "C:/xampp/htdocs/WSOptotype/src/rowsBase/"; 
        
@@ -117,9 +117,9 @@ class CardConstructor {
             $ySize = $imageSize[1]; 
             
             $this->builOptometricCard($canvas, $element, $xSize, $ySize);
-            /*$this->setYPositionOnCard($ySize, $position);
-            $this->setXPosiitonOnCard($position)*/
-
+            $this->setYPositionOnCard($ySize, $position);
+            $this->setXPosiitonOnCard($position);
+            
             $element = $this->rowsPath; 
           
         }
@@ -176,11 +176,11 @@ class CardConstructor {
        // echo $imageCanvas;
         //echo $imageElement;
          /// creo un identificador en memoria para las imagnes
-        /*$imgCanvas = imagecreatefrompng($imageCanvas);
-        $imgElement = imagecreatefrompng($imageElement);*/
+        $imgCanvas = imagecreatefrompng($imageCanvas);
+        $imgElement = imagecreatefrompng($imageElement);
         
-        $imgCanvas = imagecreatefrompng("C:/xampp/htdocs/WSOptotype/src/OptometricCard/LM1062018R2.png");
-        $imgElement = imagecreatefrompng("C:/xampp/htdocs/WSOptotype/src/rowsBase/LM1062018R2_1.png");
+        //$imgCanvas = imagecreatefrompng("C:/xampp/htdocs/WSOptotype/src/OptometricCard/LM1062018R2.png");
+        //$imgElement = imagecreatefrompng("C:/xampp/htdocs/WSOptotype/src/rowsBase/LM1062018R2_1.png");
         imagealphablending($imgElement, false);
         imagesavealpha($imgElement, false);
          
