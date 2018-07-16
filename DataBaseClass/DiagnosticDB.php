@@ -14,6 +14,8 @@ class DiagnosticDB extends PgDataBase {
         
         //$responce = "listo para procesar datos";
         
+        $response = "";
+        
         switch ($obj[0]->action){
             
             case '0':
@@ -32,6 +34,9 @@ class DiagnosticDB extends PgDataBase {
             
             case '3':
                 echo 'eliminar datos de interacion';
+                break;
+            case '4':
+                $this->sincronizeDataDiagnostic($obj);
                 break;
   
         }
@@ -103,6 +108,33 @@ class DiagnosticDB extends PgDataBase {
         $this->saveDataDiagnosticObjectiveTets($diagnostic, $obj);
         $this->saveDataDiagnosticResult($diagnostic, $obj);
         $this->saveDataDiagnosticOnRepository($diagnostic, $obj);
+    }
+    
+    private function saveBysincronize(array $obj){
+        
+        echo $obj[0]->patientData;
+        echo $obj[0]->avData;
+        echo $obj[0]->testA;
+        echo $obj[0]->testB;
+        echo $obj[0]->typeTest;
+        echo $obj[0]->status;
+        echo $obj[0]->antecedentDad;
+        echo $obj[0]->antecedentMon;
+        
+        
+    }
+    
+    private function sincronizeDataDiagnostic(array $obj){
+        
+        $array = array();
+        $sizeArray =count($obj);
+        
+        for ($x = 0; $x < $sizeArray; $x++){
+            $array[0] = $obj[$x];
+            $this->saveBysincronize($array);
+        }
+        
+        
     }
     
     private function getAId ($query, $tableNanme, $whereClausule){
