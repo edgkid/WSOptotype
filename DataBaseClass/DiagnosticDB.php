@@ -96,12 +96,12 @@ class DiagnosticDB extends PgDataBase {
         
         if ($obj[0]->antecedentMon != ""){
            $this->saveDataDiagnosticAntecedentRegister($diagnostic, $obj); 
-           $this->saveDataDiagnosticAntecedentRoll($diagnostic, $obj, $obj[0]->antacedentDad, 'M');
+           $this->saveDataDiagnosticAntecedentRoll($diagnostic, $obj, $obj[0]->antecedentMon, 'M');
         }
         
-        if ($obj[0]->antacedentDad){
+        if ($obj[0]->antecedentDad != ""){
           $this->saveDataDiagnosticAntecedentRegister($diagnostic, $obj);
-          $this->saveDataDiagnosticAntecedentRoll($diagnostic, $obj, $obj[0]->antecedentMon, 'F');
+          $this->saveDataDiagnosticAntecedentRoll($diagnostic, $obj, $obj[0]->antecedentDad, 'F');
         }        
         
         $this->saveDataDiagnosticSubjectiveTest($diagnostic, $obj);
@@ -112,15 +112,37 @@ class DiagnosticDB extends PgDataBase {
     
     private function saveBysincronize(array $obj){
         
-        echo $obj[0]->patientData;
-        echo $obj[0]->avData;
-        echo $obj[0]->testA;
-        echo $obj[0]->testB;
-        echo $obj[0]->typeTest;
-        echo $obj[0]->status;
-        echo $obj[0]->antecedentDad;
-        echo $obj[0]->antecedentMon;
-        
+        $array = array(
+            array(
+                "idPatient" => explode("-", $obj[0]->patientData)[0],
+                "yearsOld" => explode("-", $obj[0]->patientData)[1] ,
+                "gender" => explode("-", $obj[0]->patientData)[2], 
+                "avRigth" => explode("-", $obj[0]->avData)[0] ,
+                "avLeft" => explode("-", $obj[0]->avData)[1] ,
+                "center" => explode("-", $obj[0]->avData)[2] ,
+                "sustain" => explode("-", $obj[0]->avData)[3] ,
+                "maintain" => explode("-", $obj[0]->avData)[4],
+                "chronomaticOd" => explode("-", $obj[0]->testA)[0],
+                "chronomaticOi" => explode("-", $obj[0]->testA)[1],
+                "tonometriaOd" => explode("-", $obj[0]->testA)[2],
+                "tonometriaOi" => explode("-", $obj[0]->testA)[3],
+                "foria" => explode("-", $obj[0]->testB)[0],
+                "endoforia" => explode("-", $obj[0]->testB)[0],
+                "exoforia" => explode("-", $obj[0]->testB)[0],
+                "ortoforia" => explode("-", $obj[0]->testB)[0],
+                "ortotropia" => explode("-", $obj[0]->testB)[0],
+                "dvd" => explode("-", $obj[0]->testB)[0],
+                "caElevada" => explode("-", $obj[0]->testB)[0],
+                "typeTest" => explode("-", $obj[0]->typeTest)[0],
+                "colaboratedGrade" => explode("-", $obj[0]->typeTest)[1],
+                "antecedentDad" => $obj[0]->antecedentDad,
+                "antecedentMon" => $obj[0]->antecedentMon,
+                "signalDefect" =>  $obj[0]->signalDefect
+            )
+        );
+ 
+        $myObj = json_encode($array);
+        $this->saveDataDiagnostic(json_decode($myObj));
         
     }
     
@@ -236,7 +258,7 @@ class DiagnosticDB extends PgDataBase {
     private function saveDataDiagnosticAntecedentRoll (Diagnostic $diagnostic, array $obj, $antecedent, $roll){
         
         $someId = array();
-        $arrayAntecedent = split(',', $antecedent);
+        $arrayAntecedent = explode(',', $antecedent);
         $tableName = " EYE_DEFECT ed ";
         $query = " SELECT ed.idDefect FROM ";
         $whereClausule = " WHERE";
@@ -328,13 +350,13 @@ class DiagnosticDB extends PgDataBase {
         $arrayAntecedent = array();
         
         if($obj[0]->antecedentMon != ""){
-           $arrayMon = split(',',$obj[0]->antecedentMon); 
+           $arrayMon = explode(',',$obj[0]->antecedentMon); 
         }
-        if ($obj[0]->antacedentDad != ""){
-            $arrayDad = split(',', $obj[0]->antacedentDad);
+        if ($obj[0]->antecedentDad != ""){
+            $arrayDad = explode(',', $obj[0]->antecedentDad);
         }
         if($obj[0]->signalDefect != ""){
-           $arraySIgnal = split(',', $obj[0]->signalDefect); 
+           $arraySIgnal = explode(',', $obj[0]->signalDefect); 
         }
         
         $arrayAntecedent = array_merge($arrayMon, $arrayDad);
@@ -349,7 +371,7 @@ class DiagnosticDB extends PgDataBase {
                     }
                 }
             }else{
-                for ($x = 0; $x <count($arrayAntecedent); $x++){
+                for ($x = 0; $x < count($arrayAntecedent); $x++){
                     $this->insertInRepository($diagnostic, $obj,null,$arrayAntecedent[$x]);
                 }
             }
