@@ -306,8 +306,8 @@ class DiagnosticDB extends PgDataBase {
         
         $idTable = "idAvResult";
         $whereClausule = " ";
-        $query = "INSERT INTO AV_RESULT (eyeRight,eyeLeft) VALUES (";
-        $query = $query.$obj[0]->avRigth.",".$obj[0]->avLeft."); commit;";
+        $query = "INSERT INTO AV_RESULT (eyeRight,eyeLeft) VALUES ('";
+        $query = $query.$obj[0]->avRigth."','".$obj[0]->avLeft."'); commit;";
         
         $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
         
