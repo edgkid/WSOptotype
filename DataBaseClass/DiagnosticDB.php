@@ -106,6 +106,7 @@ class DiagnosticDB extends PgDataBase {
         
         $this->saveDataDiagnosticSubjectiveTest($diagnostic, $obj);
         $this->saveDataDiagnosticObjectiveTets($diagnostic, $obj);
+        $this->saveDataDiagnosticOtherTest($diagnostic, $obj);
         $this->saveDataDiagnosticResult($diagnostic, $obj);
         $this->saveDataDiagnosticOnRepository($diagnostic, $obj);
     }
@@ -319,6 +320,28 @@ class DiagnosticDB extends PgDataBase {
         
     }
     
+    private function saveDataDiagnosticOtherTest(Diagnostic $diagnostic, array $obj){
+        
+        $idTable = "idOtherTest";
+        $whereClausule = " ";
+        $query = "INSERT INTO OTHER_TEST (ortoforia, ortotropia, foria, endoforia,";
+        $query = $query." exoforia, dvd, caElevada,tonometriaOd, tonometriaOi,";
+        $query = $query." crhomaticOd, crhomaticOi) VALUES ('";
+        $query = $query.$obj[0]->ortoforia."','".$obj[0]->ortotropia."','".$obj[0]->foria."','";
+        $query = $query.$obj[0]->endoforia."','".$obj[0]->exoforia."','".$obj[0]->dvd."','";
+        $query = $query.$obj[0]->caElevada."','".$obj[0]->tonometriaOd."','".$obj[0]->tonometriaOi."','";
+        $query = $query.$obj[0]->crhomaticOd."','".$obj[0]->crhomaticOi."'); commit;";
+        
+        $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+        
+        if ($result){
+            $query = " Select max (".$idTable.") from ";
+            $tableName = " OTHER_TEST ";
+            $diagnostic->setIdOtherTest($this->getAId($query, $tableName, $whereClausule));
+        }  
+        
+    }
+    
     private function saveDataDiagnosticResult (Diagnostic $diagnostic, array $obj){
         
         $appointment = "(   SELECT idAppointment 
@@ -334,10 +357,10 @@ class DiagnosticDB extends PgDataBase {
         }
         
         $query = "INSERT INTO DIAGNOSTIC_RESULT (typeTest,colaboration,";
-        $query = $query."fk_idSubjective,fk_idAvResult,fk_antecendent,fk_Signal,fk_Appointment) VALUES (";
+        $query = $query."fk_idSubjective,fk_idAvResult,fk_antecendent,fk_Signal,fk_Appointment, fk_idOtherTest) VALUES (";
         $query = $query."'".$obj[0]->typeTest."','".$obj[0]->colaboratedGrade."',";
         $query = $query.$diagnostic->getIdSubjectiveTest().",".$diagnostic->getIdObjectiveTest().",";
-        $query = $query.$diagnostic->getIdAntecedent().",".$diagnostic->getIdSignalDefect().",".$appointment."); commit;";
+        $query = $query.$diagnostic->getIdAntecedent().",".$diagnostic->getIdSignalDefect().",".$appointment.",".$diagnostic->getIdOtherTest()."); commit;";
         
         $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
     }

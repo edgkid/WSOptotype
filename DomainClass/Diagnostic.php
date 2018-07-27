@@ -11,6 +11,7 @@ class Diagnostic {
     private $idSubjectiveTest;
     private $idObjectiveTest;
     private $idAntecedent;
+    private $idOtherTest;
     
     function __construct() {
         $this->idPatient = 0;
@@ -18,6 +19,7 @@ class Diagnostic {
         $this->idSubjectiveTest = 0;
         $this->idObjectiveTest = 0;
         $this->idAntecedent = 0;
+        $this->idOtherTest = 0;
     }
 
     
@@ -69,6 +71,16 @@ class Diagnostic {
     function setIdAvResult($idAvResult) {
         $this->idAvResult = $idAvResult;
     }
+    
+    function getIdOtherTest() {
+        return $this->idOtherTest;
+    }
+
+    function setIdOtherTest($idOtherTest) {
+        $this->idOtherTest = $idOtherTest;
+    }
+
+
 
 
 }
