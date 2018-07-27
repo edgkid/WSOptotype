@@ -428,13 +428,19 @@ class DiagnosticDB extends PgDataBase {
             $antValue = $this->getAId($query, $tableName, $whereClausule);
         }
         
+        //Aqui agrego los datos de other test
         $query = "INSERT INTO REPOSITORY_DIAGNOSTIC (repositoryYears, repositorySex, respositoryCenter,";
         $query = $query."repositorySustain, repositorymaintain, repositoryAvRigth, repositoryAvLeft,";
-        $query = $query."repositoryColaborated, repositoryTypeTest, repositoryDate, fk_defect, fk_signalDefect) ";
+        $query = $query."repositoryColaborated, repositoryTypeTest, repositoryDate, ortoforia, ortotropia,";
+        $query = $query."foria, endoforia, exoforia, dvd, caElevada, tonometriaOd, tonometriaOi, crhomaticOd,";
+        $query = $query."crhomaticOi, fk_defect, fk_signalDefect) ";
         $query = $query."VALUES (".$obj[0]->yearsOld.",'".$obj[0]->gender."','".$obj[0]->center."','";
         $query = $query.$obj[0]->sustain."','".$obj[0]->maintain."','".$obj[0]->avRigth."','".$obj[0]->avLeft."','";
-        $query = $query.$obj[0]->colaboratedGrade."','".$obj[0]->typeTest."','".$today."',".$antValue.",";
-        $query = $query.$sigValue."); commit;";
+        $query = $query.$obj[0]->colaboratedGrade."','".$obj[0]->typeTest."','".$today."','";
+        $query = $query.$obj[0]->ortoforia."','".$obj[0]->ortotropia."','".$obj[0]->foria."','".$obj[0]->endoforia."','";
+        $query = $query.$obj[0]->exoforia."','".$obj[0]->dvd."','".$obj[0]->caElevada."','".$obj[0]->tonometriaOd."','";
+        $query = $query.$obj[0]->tonometriaOi."','".$obj[0]->crhomaticOd."','".$obj[0]->crhomaticOi."',";
+        $query = $query.$antValue.",".$sigValue."); commit;";
         
         $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
         
