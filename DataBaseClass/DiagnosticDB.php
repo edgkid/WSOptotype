@@ -2,6 +2,7 @@
 
 //require_once 'PgDataBase.php';
 require_once 'DomainClass/Diagnostic.php';
+require_once 'DomainClass/AvStandar.php';
 /**
  * Description of DiagnosticDB
  *
@@ -45,7 +46,7 @@ class DiagnosticDB extends PgDataBase {
     }
     
     
-    private function readDiagnostic(array $obj){
+    /*private function readDiagnostic(array $obj){
         
         $data = array();
         $query = "( SELECT avr.eyeRight AS eyeRight , avr.eyeLeft AS eyeLeft, sut.Center AS center, sut.Sustain AS sustain, ". 
@@ -81,6 +82,60 @@ class DiagnosticDB extends PgDataBase {
      
         return $data; 
         
+    }*/
+    
+    private function readDiagnostic(array $obj){
+        
+        $data = array();
+        $dataJson = array();
+        $subjective = "";
+        $tonometric = "";
+        $chronomatic = "";
+        $testMacular = "";
+        $objectiveTest = "";
+        
+        $query = "  SELECT  idRepositoryDiagnostic, repositoryYears, ". 
+		"           respositoryCenter, repositorySustain, repositoryMaintain, ".
+		"           repositoryAvRigth, repositoryAvLeft, ".
+		"           repositoryTypeTest, repositoryDate, ortoforia, ortotropia, foria, ".
+		"           endoforia, exoforia, dvd, caElevada, tonometriaOd, tonometriaOi, ".
+		"           crhomaticOd, crhomaticOi ".
+                "   FROM Repository_Diagnostic ".
+                "   WHERE fk_idPatient = ". $obj[0]->idPatient.
+                "   ORDER BY idRepositoryDiagnostic DESC ".
+                "   LIMIT 1 ";
+
+        $dataAppointment = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+       
+        while ($line = pg_fetch_array($dataAppointment, null, PGSQL_ASSOC)) {
+            $data []= array('eyeRight'=>$line['repositoryavrigth'],'eyeleft'=>$line['repositoryavleft'],
+                'center'=>$line['respositorycenter'],'sustain'=>$line['repositorysustain'],
+                'maintain'=>$line['repositorymaintain'], 'appointmentdate'=>$line['repositorydate'],
+                'typeTest'=> $line['repositorytypetest'], 'ortoforia'=>$line['ortoforia'],'ortotropia'=>$line['ortotropia'],
+                'foria'=> $line['foria'], 'endoforia'=> $line['endoforia'], 'exoforia'=> $line['exoforia'],
+                'dvd'=> $line['dvd'], 'caElevada'=> $line['caelevada'], 'tonometriaOd'=> $line['tonometriaod'],
+                'tonometriaOi'=> $line['tonometriaoi'], 'crhomaticOd'=> $line['crhomaticod'], 'crhomaticOi' => $line['crhomaticoi'],
+                'repositoryYears'=> $line['repositoryyears']);
+         }   
+        
+        $avStandar = new AvStandar();
+        $objectiveTest = $avStandar->getDiagnosticStandarAvTest($data);
+        $subjective = $avStandar->getMessageSubjectiveTest($data);
+        $tonometric = $avStandar->getMessageTonometricTest($data);
+        $chronomatic = $avStandar->getDiagnosticStandarChromaticTest($data);
+        $testMacular = $avStandar->getDiagnosticStandarMacularBalance($data);
+         
+        $dataJson[] = array('eyeRight'=>$data[0]['eyeRight'],'eyeleft'=>$data[0]['eyeleft'],
+                'center'=>$data[0]['center'],'sustain'=>$data[0]['sustain'],
+                'maintain'=>$data[0]['maintain'], 'appointmentdate'=>$data[0]['appointmentdate'],
+                'typeTest'=> $data[0]['typeTest'], 'ortoforia'=>$data[0]['ortoforia'],'ortotropia'=>$data[0]['ortotropia'],
+                'foria'=> $data[0]['foria'], 'endoforia'=> $data[0]['endoforia'], 'exoforia'=> $data[0]['exoforia'],
+                'dvd'=> $data[0]['dvd'], 'caElevada'=> $data[0]['caElevada'], 'tonometriaOd'=> $data[0]['tonometriaOd'],
+                'tonometriaOi'=> $data[0]['tonometriaOi'], 'crhomaticOd'=> $data[0]['crhomaticOd'], 'crhomaticOi' => $data[0]['crhomaticOi'],
+                'objectiveTest'=> $objectiveTest, 'subjectiveTest'=>$subjective, 'tonometricTest'=>$tonometric,
+                'chronomaticTest'=>$chronomatic, 'testMacular'=>$testMacular);
+        
+        return $dataJson; 
     }
     
     
