@@ -98,7 +98,7 @@ class DiagnosticDB extends PgDataBase {
 		"           respositoryCenter, repositorySustain, repositoryMaintain, ".
 		"           repositoryAvRigth, repositoryAvLeft, ".
 		"           repositoryTypeTest, repositoryDate, ortoforia, ortotropia, foria, ".
-		"           endoforia, exoforia, dvd, caElevada, tonometriaOd, tonometriaOi, ".
+		"           endoforia, exoforia, dvd, caElevada,hipertropia, tonometriaOd, tonometriaOi, ".
 		"           crhomaticOd, crhomaticOi ".
                 "   FROM Repository_Diagnostic ".
                 "   WHERE fk_idPatient = ". $obj[0]->idPatient.
@@ -115,7 +115,7 @@ class DiagnosticDB extends PgDataBase {
                 'foria'=> $line['foria'], 'endoforia'=> $line['endoforia'], 'exoforia'=> $line['exoforia'],
                 'dvd'=> $line['dvd'], 'caElevada'=> $line['caelevada'], 'tonometriaOd'=> $line['tonometriaod'],
                 'tonometriaOi'=> $line['tonometriaoi'], 'crhomaticOd'=> $line['crhomaticod'], 'crhomaticOi' => $line['crhomaticoi'],
-                'repositoryYears'=> $line['repositoryyears']);
+                'repositoryYears'=> $line['repositoryyears'], 'hipertropia'=>$line['hipertropia']);
          }   
         
         $avStandar = new AvStandar();
@@ -133,7 +133,7 @@ class DiagnosticDB extends PgDataBase {
                 'dvd'=> $data[0]['dvd'], 'caElevada'=> $data[0]['caElevada'], 'tonometriaOd'=> $data[0]['tonometriaOd'],
                 'tonometriaOi'=> $data[0]['tonometriaOi'], 'crhomaticOd'=> $data[0]['crhomaticOd'], 'crhomaticOi' => $data[0]['crhomaticOi'],
                 'objectiveTest'=> $objectiveTest, 'subjectiveTest'=>$subjective, 'tonometricTest'=>$tonometric,
-                'chronomaticTest'=>$chronomatic, 'testMacular'=>$testMacular);
+                'chronomaticTest'=>$chronomatic, 'testMacular'=>$testMacular, 'hipertropia'=>$data[0]['hipertropia']);
         
         return $dataJson; 
     }
@@ -380,11 +380,11 @@ class DiagnosticDB extends PgDataBase {
         $idTable = "idOtherTest";
         $whereClausule = " ";
         $query = "INSERT INTO OTHER_TEST (ortoforia, ortotropia, foria, endoforia,";
-        $query = $query." exoforia, dvd, caElevada,tonometriaOd, tonometriaOi,";
+        $query = $query." exoforia, dvd, caElevada, hipertropia,tonometriaOd, tonometriaOi,";
         $query = $query." crhomaticOd, crhomaticOi) VALUES ('";
         $query = $query.$obj[0]->ortoforia."','".$obj[0]->ortotropia."','".$obj[0]->foria."','";
         $query = $query.$obj[0]->endoforia."','".$obj[0]->exoforia."','".$obj[0]->dvd."','";
-        $query = $query.$obj[0]->caElevada."','".$obj[0]->tonometriaOd."','".$obj[0]->tonometriaOi."','";
+        $query = $query.$obj[0]->caElevada."','".$obj[0]->hipertropia."','".$obj[0]->tonometriaOd."','".$obj[0]->tonometriaOi."','";
         $query = $query.$obj[0]->crhomaticOd."','".$obj[0]->crhomaticOi."'); commit;";
         
         $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
@@ -487,13 +487,13 @@ class DiagnosticDB extends PgDataBase {
         $query = "INSERT INTO REPOSITORY_DIAGNOSTIC (repositoryYears, repositorySex, respositoryCenter,";
         $query = $query."repositorySustain, repositorymaintain, repositoryAvRigth, repositoryAvLeft,";
         $query = $query."repositoryColaborated, repositoryTypeTest, repositoryDate, ortoforia, ortotropia,";
-        $query = $query."foria, endoforia, exoforia, dvd, caElevada, tonometriaOd, tonometriaOi, crhomaticOd,";
+        $query = $query."foria, endoforia, exoforia, dvd, caElevada, hipertropia, tonometriaOd, tonometriaOi, crhomaticOd,";
         $query = $query."crhomaticOi, fk_defect, fk_signalDefect, fk_idPatient ) ";
         $query = $query."VALUES (".$obj[0]->yearsOld.",'".$obj[0]->gender."','".$obj[0]->center."','";
         $query = $query.$obj[0]->sustain."','".$obj[0]->maintain."','".$obj[0]->avRigth."','".$obj[0]->avLeft."','";
         $query = $query.$obj[0]->colaboratedGrade."','".$obj[0]->typeTest."','".$today."','";
         $query = $query.$obj[0]->ortoforia."','".$obj[0]->ortotropia."','".$obj[0]->foria."','".$obj[0]->endoforia."','";
-        $query = $query.$obj[0]->exoforia."','".$obj[0]->dvd."','".$obj[0]->caElevada."','".$obj[0]->tonometriaOd."','";
+        $query = $query.$obj[0]->exoforia."','".$obj[0]->dvd."','".$obj[0]->caElevada."','".$obj[0]->hipertropia."','".$obj[0]->tonometriaOd."','";
         $query = $query.$obj[0]->tonometriaOi."','".$obj[0]->crhomaticOd."','".$obj[0]->crhomaticOi."',";
         $query = $query.$antValue.",".$sigValue.",".$diagnostic->getIdPatient()."); commit;";
         
